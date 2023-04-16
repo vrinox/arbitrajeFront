@@ -5,6 +5,7 @@ import { DailyPerformanceData, IArbitrage } from '../interfaces/arbitrage.interf
 import { ArbitrageFactory } from '../factories/arbitrage.factory';
 import { DashboardService } from './dashboard.service';
 import { ArbitrageStatusEnum } from '../enum/arbitrage.enum';
+import { roundToPrecision } from '../utils/math.util';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,6 +38,11 @@ export class DashboardComponent implements OnInit {
       this.arbitrages = arbitrages.filter(({ realOrders }) => realOrders.length).map(this.arbitrageFactory.createArbitrage);
       this.groupArbitragesByDay();
       this.dailyPerformance = Object.entries(this.arbitragesByDay).map(([day, arbitrages]) => this.dashboardService.getDailyPerformance({ day, arbitrages }))
+      Object.values(this.arbitragesByDay).forEach((day)=>{
+        const first = day[0];
+        const last = day[day.length -1];
+        console.log(first.BalanceUpdates[ArbitrageStatusEnum.INIT]['USDT'], last.BalanceUpdates[last.status]['USDT'])
+      })
     });
   }
   groupArbitragesByDay(): void {
@@ -88,7 +94,7 @@ export class DashboardComponent implements OnInit {
     if (arbitrage.status !== ArbitrageStatusEnum.END) return 0;
     const simulatedProfit = arbitrage.getSimulateProfit();
     const realProfit = arbitrage.calculateRealProfit();
-    return realProfit - simulatedProfit;
+    return roundToPrecision(realProfit - simulatedProfit,2);
   }
 
 }

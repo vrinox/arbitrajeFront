@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DailyPerformanceData } from '../interfaces/arbitrage.interface';
 import { Arbitrage } from '../entities/arbitrage.entity';
 import { ArbitrageStatusEnum } from '../enum/arbitrage.enum';
+import { roundToPrecision } from '../utils/math.util';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class DashboardService {
       dailyPerformance.arbitragesWithProfit += arbitrage.calculateRealProfit() > 0 ? 1 : 0;
       dailyPerformance.arbitragesWithLoss += arbitrage.calculateRealProfit() < 0 ? 1 : 0;
       dailyPerformance.arbitragesFailed += arbitrage.status === ArbitrageStatusEnum.REVERSED? 1 : 0;
-      dailyPerformance.profitLoss += arbitrage.calculateRealProfit();
+      dailyPerformance.profitLoss += roundToPrecision(arbitrage.calculateRealProfit(), 2);
       dailyPerformance.failedArbitrages += arbitrage.status === ArbitrageStatusEnum.REVERSED? 1 : 0;
       dailyPerformance.averageTime += (arbitrage.finishAt || 0) - (arbitrage.createdAt || 0);
       dailyPerformance.totalFees += arbitrage.calculateRealFees();

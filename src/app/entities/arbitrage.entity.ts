@@ -49,15 +49,19 @@ export class Arbitrage implements IArbitrage {
   }
 
   calculateRealProfit(): number {
-    if (this.status !== ArbitrageStatusEnum.END) return 0
-    const baseAsset = this.symbols[0].split('/')[1];
-    const feesValue = this.calculateRealFees() * this.feesCoinPrice;
-    return this.BalanceUpdates[ArbitrageStatusEnum.END][baseAsset] - this.BalanceUpdates[ArbitrageStatusEnum.INIT][baseAsset] - feesValue;
+    if (this.status === ArbitrageStatusEnum.END || this.status === ArbitrageStatusEnum.REVERSED) {
+      const baseAsset = this.symbols[0].split('/')[1];
+      const feesValue = this.calculateRealFees() * this.feesCoinPrice;
+      return roundToPrecision(this.BalanceUpdates[this.status][baseAsset] - this.BalanceUpdates[ArbitrageStatusEnum.INIT][baseAsset] - feesValue,2);
+    }
+    return 0
   }
 
   calculateRealFees(): number {
-    if (this.status !== ArbitrageStatusEnum.END) return 0
-    return this.BalanceUpdates[ArbitrageStatusEnum.INIT][this.feeCurrency] - this.BalanceUpdates[this.status][this.feeCurrency];
+    if (this.status === ArbitrageStatusEnum.END || this.status === ArbitrageStatusEnum.REVERSED) {
+      return roundToPrecision(this.BalanceUpdates[ArbitrageStatusEnum.INIT][this.feeCurrency] - this.BalanceUpdates[this.status][this.feeCurrency],8);
+    }
+    return 0
   }
 
   getSimulateProfit() {
