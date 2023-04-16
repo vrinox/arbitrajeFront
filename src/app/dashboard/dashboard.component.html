@@ -1,0 +1,75 @@
+<mat-card *ngFor="let daily of dailyPerformance">
+  <mat-card-title>Daily Performance {{daily.date}}</mat-card-title>
+  <mat-card-content>
+    <div fxLayout="row wrap" fxLayoutGap="20px">
+      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
+        <mat-card>
+          <mat-card-title>Total Arbitrages</mat-card-title>
+          <mat-card-content>
+            total:{{ daily.totalArbitrages }} Successful:{{daily.successfulArbitrages}} withProfit:{{daily.arbitragesWithProfit}} failed:{{daily.arbitragesFailed}}
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
+        <mat-card>
+          <mat-card-title>Profit/loss</mat-card-title>
+          <mat-card-content>
+            {{ daily.profitLoss }}
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
+        <mat-card>
+          <mat-card-title>Fees</mat-card-title>
+          <mat-card-content>
+            {{ daily.totalFees }}
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <mat-card *ngFor="let arbitrage of daily.arbitrages">
+      <mat-card-title>Arbitrage Detail({{ arbitrage.status}})</mat-card-title>
+      <mat-card-content>
+        <div>
+          <strong>Price Variations:</strong>
+          <ul>
+            <li *ngFor="let priceVariation of getPriceVariations(arbitrage)">
+              Calculated: {{ priceVariation.calculated | number: '1.2-8' }},
+              Real: {{ priceVariation.real | number: '1.2-8' }},
+              Percent Difference: {{ priceVariation.percentDiff | number: '1.2-2' }}%
+            </li>
+          </ul>
+        </div>
+        <div>
+          <strong>Real Profit/Loss:</strong> {{ arbitrage.calculateRealProfit() }}
+        </div>
+        <div *ngIf="arbitrage.status === 'end'">
+          <strong>Simulation Differences:</strong> {{ getSimulationDifferences(arbitrage) }}
+        </div>
+        <div>
+          <strong>Execution Time:</strong> {{ arbitrage.finishAt - arbitrage.createdAt }} ms
+        </div>
+        <div>
+          <strong>Real Orders:</strong>
+          <ul>
+            <li *ngFor="let order of arbitrage.realOrders">
+              {{ order.side }} {{ order.origQty }} at {{ order.price }}
+            </li>
+          </ul>
+        </div>
+        <div>
+          <strong>Log:</strong>
+          <ul>
+            <li *ngFor="let log of arbitrage.log">
+              {{ log.msg }}
+            </li>
+          </ul>
+        </div>
+        <div>
+          <strong>Fees:</strong> {{ arbitrage.calculateRealFees() }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>
