@@ -40,28 +40,38 @@ export class DashboardComponent implements OnInit {
     });
   }
   groupArbitragesByDay(): void {
-    this.arbitrages.sort((a, b) => a.createdAt - b.createdAt);
-    let init = 0;
-    this.arbitragesByDay = this.arbitrages.reduce((acc: any, arbitrage) => {
+    const temp: any = {};
+
+    this.arbitrages.forEach((arbitrage) => {
       const date = new Date(arbitrage.createdAt);
       const dayKey = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-      if(arbitrage.status === 'init') init++;
-      if (!acc[dayKey]) {
-        acc[dayKey] = [];
-      }
-      acc[dayKey].push(arbitrage);
 
+      if (!temp[dayKey]) {
+        temp[dayKey] = [];
+      }
+      temp[dayKey].push(arbitrage);
+    });
+
+    // Sort the date keys
+    const sortedKeys = Object.keys(temp).sort((a, b) => {
+      const [dayA, monthA, yearA] = a.split('-').map(Number);
+      const [dayB, monthB, yearB] = b.split('-').map(Number);
+
+      return new Date(yearB, monthB - 1, dayB).getTime() - new Date(yearA, monthA - 1, dayA).getTime();
+    });
+
+    // Create the final sorted object
+    this.arbitragesByDay = sortedKeys.reduce((acc: any, key) => {
+      acc[key] = temp[key];
       return acc;
     }, {});
-    console.log(init);
-    
   }
 
   ngOnInit(): void {
     this.socketService.getAllArbitrages()
   }
   getPriceVariations(arbitrage: Arbitrage): { calculated: number, real: number, percentDiff: number }[] {
-    const priceVariations:{ calculated: number, real: number, percentDiff: number }[] = [];
+    const priceVariations: { calculated: number, real: number, percentDiff: number }[] = [];
 
     for (let i = 0; i < arbitrage.realOrders.length; i++) {
       const calculatedPrice = arbitrage.calculatedOrders[i].price;
