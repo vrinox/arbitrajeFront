@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +15,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ArbitrageFactory } from './factories/arbitrage.factory';
+
+import './components/arbitrage-detail';
+import './components/price-variation-list-item';
+import './components/real-order-display';
 
 @NgModule({
   declarations: [
@@ -37,6 +41,7 @@ import { ArbitrageFactory } from './factories/arbitrage.factory';
     MatProgressBarModule
   ],
   providers: [ArbitrageFactory],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

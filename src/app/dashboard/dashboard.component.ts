@@ -76,25 +76,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.socketService.getAllArbitrages()
   }
-  getPriceVariations(arbitrage: Arbitrage): { calculated: number, real: number, percentDiff: number }[] {
-    const priceVariations: { calculated: number, real: number, percentDiff: number }[] = [];
-
-    for (let i = 0; i < arbitrage.realOrders.length; i++) {
-      const calculatedPrice = arbitrage.calculatedOrders[i].price;
-      const realPrice = Number(arbitrage.realOrders[i].price);
-      const percentDiff = ((realPrice - calculatedPrice) / calculatedPrice) * 100;
-
-      priceVariations.push({ calculated: calculatedPrice, real: realPrice, percentDiff });
-    }
-
-    return priceVariations;
-  }
-
-  getSimulationDifferences(arbitrage: Arbitrage): number {
-    if (arbitrage.status !== ArbitrageStatusEnum.END) return 0;
-    const simulatedProfit = arbitrage.getSimulateProfit();
-    const realProfit = arbitrage.calculateRealProfit();
-    return roundToPrecision(realProfit - simulatedProfit,2);
-  }
+  
 
 }

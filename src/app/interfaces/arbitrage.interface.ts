@@ -105,3 +105,5 @@ export interface DailyPerformanceData {
   date: string,
   arbitragesFailed: number
 }
+
+export interface PriceVariationItem{ calculated: number, real: number, percentDiff: number }

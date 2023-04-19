@@ -17,7 +17,7 @@ export class Arbitrage implements IArbitrage {
   feesCoinPrice: number;
   createdAt: number = 0;
   finishAt: number = 0;
-  log?: ArbitrageLog[] = [];
+  log: ArbitrageLog[] = [];
 
   constructor({
     arbitrageId,
