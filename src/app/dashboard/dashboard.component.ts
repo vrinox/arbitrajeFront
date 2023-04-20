@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketIOServiceService } from '../socket-ioservice.service';
 import { Arbitrage } from '../entities/arbitrage.entity';
-import { DailyPerformanceData, IArbitrage } from '../interfaces/arbitrage.interface';
+import { DailyPerformanceData, IArbitrage } from '../core/interfaces/arbitrage.interface';
 import { ArbitrageFactory } from '../factories/arbitrage.factory';
 import { DashboardService } from './dashboard.service';
-import { ArbitrageStatusEnum } from '../enum/arbitrage.enum';
-import { roundToPrecision } from '../utils/math.util';
+import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
+import { roundToPrecision } from '../core/utils/math.util';
 
 @Component({
   selector: 'app-dashboard',

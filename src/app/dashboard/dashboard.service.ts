@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
-import { DailyPerformanceData } from '../interfaces/arbitrage.interface';
+import { DailyPerformanceData } from '../core/interfaces/arbitrage.interface';
 import { Arbitrage } from '../entities/arbitrage.entity';
-import { ArbitrageStatusEnum } from '../enum/arbitrage.enum';
-import { roundToPrecision } from '../utils/math.util';
+import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
+import { roundToPrecision } from '../core/utils/math.util';
 
 @Injectable({
   providedIn: 'root',

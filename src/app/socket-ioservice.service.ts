@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { IArbitrage } from './interfaces/arbitrage.interface';
+import { IArbitrage } from './core/interfaces/arbitrage.interface';
 import { Arbitrage } from './entities/arbitrage.entity';
 import { BehaviorSubject } from 'rxjs';
 import { ArbitrageFactory } from './factories/arbitrage.factory';
 import {io} from 'socket.io-client';
-import { environment } from './environments/enviroment';
+import { environment } from './core/environments/enviroment';
 import { Observable } from 'rxjs';
-import { SocketNotificationTypeEnum } from './enum/arbitrage.enum';
+import { SocketNotificationTypeEnum } from './core/enum/arbitrage.enum';
 
 @Injectable({
   providedIn: 'root'

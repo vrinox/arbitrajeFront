@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Arbitrage } from '../entities/arbitrage.entity';
-import { ArbitrageStatusEnum } from '../enum/arbitrage.enum';
+import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
+import { ColorsEnum } from '../core/enum/colors.enum';
 
 @customElement('arbitrage-min-card')
 export class ArbitrageMinCard extends LitElement {
@@ -19,6 +20,7 @@ export class ArbitrageMinCard extends LitElement {
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       padding: 16px;
       max-width: calc(50vw - 62px);
+      min-width: 110px
     }
     .icon-cont{
       float: right;
@@ -50,7 +52,7 @@ export class ArbitrageMinCard extends LitElement {
     const profitLoss = this.arbitrage.calculateRealProfit();
     return html`
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <div class='card' style="background-color:${profitLoss >= 0? 'forestgreen': 'firebrick'}">
+    <div class='card' style="background-color:${profitLoss >= 0? ColorsEnum.green: ColorsEnum.red}">
       <div class='title'>[${intermediate}/${ticker}] 
         <div class='icon-cont'>
           ${this.printStatusIcon()}

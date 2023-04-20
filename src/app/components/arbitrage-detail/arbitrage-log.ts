@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ArbitrageLog, Order } from '../../interfaces/arbitrage.interface';
+import { ArbitrageLog } from '../../core/interfaces/arbitrage.interface';
+import { ColorsEnum } from '../../core/enum/colors.enum';
 
 @customElement('arbitrage-log-display')
 export class ArbitrageLogDisplay extends LitElement {
@@ -27,8 +28,8 @@ export class ArbitrageLogDisplay extends LitElement {
     return false;
   }
   getColor(){
-    if(this.isFailed()) return 'firebrick';
-    if(this.isComplete()) return 'forestgreen';
+    if(this.isFailed()) return ColorsEnum.red;
+    if(this.isComplete()) return ColorsEnum.green;
     if(this.isPriceLog()) return '#3700b3';
     return 'black';
   }
@@ -37,7 +38,7 @@ export class ArbitrageLogDisplay extends LitElement {
     const { msg, step } = this.log;
     return html`
     <mat-list-item >
-    <strong style="color: ${this.getColor()}">[${step}]</strong> ${msg}
+      <strong style="color: ${this.getColor()}">[${step}]</strong> ${msg}
     </mat-list-item>
   `;
   }

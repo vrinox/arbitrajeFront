@@ -1,6 +1,6 @@
 import { Arbitrage } from "../entities/arbitrage.entity";
-import { ArbitrageStatusEnum } from "../enum/arbitrage.enum";
-import { IArbitrage, Order } from "../interfaces/arbitrage.interface";
+import { ArbitrageStatusEnum } from "../core/enum/arbitrage.enum";
+import { IArbitrage, Order } from "../core/interfaces/arbitrage.interface";
 
 export class ArbitrageFactory {
   public createArbitrage(data: IArbitrage): Arbitrage {

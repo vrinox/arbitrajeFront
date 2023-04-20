@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { PriceVariationItem } from '../../interfaces/arbitrage.interface';
+import { PriceVariationItem } from '../../core/interfaces/arbitrage.interface';
+import { ColorsEnum } from '../../core/enum/colors.enum';
 
 @customElement('price-variation-list-item')
 export class PriceVariationListItem extends LitElement {
@@ -20,7 +21,7 @@ export class PriceVariationListItem extends LitElement {
     <mat-list-item>
         <div>Calculated: ${Number(calculated)}</div>
         <div>Real: ${Number(real)}</div>
-        <strong style="color: ${percentDiff >= 0 ? 'green' : 'firebrick'}">
+        <strong style="color: ${percentDiff >= 0 ? 'green' : ColorsEnum.red}">
           Percent Difference: ${percentDiff.toFixed(2)}%
         </strong>
     </mat-list-item>

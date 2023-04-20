@@ -2,9 +2,10 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Arbitrage } from '../../entities/arbitrage.entity';
-import { ArbitrageStatusEnum } from '../../enum/arbitrage.enum';
-import { roundToPrecision } from '../../utils/math.util';
-import { PriceVariationItem } from '../../interfaces/arbitrage.interface';
+import { ArbitrageStatusEnum } from '../../core/enum/arbitrage.enum';
+import { roundToPrecision } from '../../core/utils/math.util';
+import { PriceVariationItem } from '../../core/interfaces/arbitrage.interface';
+import { ColorsEnum } from '../../core/enum/colors.enum';
 
 @customElement('arbitrage-detail')
 export class ArbitrageDetail extends LitElement {
@@ -87,8 +88,8 @@ export class ArbitrageDetail extends LitElement {
           <h3>Data:</h3>
           <i>Status:</i> ${this.arbitrage.status}<br>
           <i>Arbitrage Id:</i> ${this.arbitrage.arbitrageId}<br>
-          <i>Simulation Differences:</i><span style="color: ${ simulationDiff >= 0 ? 'forestgreen' : 'firebrick'}"> ${simulationDiff}$</span><br>
-          <i>Real Profit/Loss:</i><span style="color: ${ realProfit >= 0 ? 'forestgreen' : 'firebrick'}"> ${realProfit}$</span><br>
+          <i>Simulation Differences:</i><span style="color: ${ simulationDiff >= 0 ? ColorsEnum.green : ColorsEnum.red}"> ${simulationDiff}$</span><br>
+          <i>Real Profit/Loss:</i><span style="color: ${ realProfit >= 0 ? ColorsEnum.green : ColorsEnum.red}"> ${realProfit}$</span><br>
           <i>Execution Time:</i> ${this.getExecutionTime()} min<br>
           <i>Fees:</i> ${this.arbitrage.calculateRealFees()} ${feeCurrency}<br>
         </div>

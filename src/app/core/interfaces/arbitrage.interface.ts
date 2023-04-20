@@ -1,4 +1,4 @@
-import { Arbitrage } from "../entities/arbitrage.entity";
+import { Arbitrage } from "../../entities/arbitrage.entity";
 import { ArbitrageStatusEnum } from "../enum/arbitrage.enum";
 
 export interface CalculatedOrderData {

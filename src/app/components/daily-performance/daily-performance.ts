@@ -1,7 +1,9 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DailyPerformanceData } from '../../interfaces/arbitrage.interface';
-
+import { DailyPerformanceData } from '../../core/interfaces/arbitrage.interface';
+import { Chart, PieController, ArcElement, Legend, Tooltip } from 'chart.js';
+import { ColorsEnum } from '../../core/enum/colors.enum';
+Chart.register(PieController, ArcElement, Legend, Tooltip);
 @customElement('daily-performance')
 export class DailyPerformance extends LitElement {
   @property({ type: Object }) data: DailyPerformanceData = {
@@ -30,7 +32,8 @@ export class DailyPerformance extends LitElement {
       display: flex;
       width: calc(100vw -20px);
       overflow: hidden;
-      flex-wrap: wrap
+      flex-wrap: wrap;
+      width: 456px;
     }
     .daily{
       color: black;
@@ -48,21 +51,60 @@ export class DailyPerformance extends LitElement {
     .content{
       padding:16px;
     }
+    .three-or-less{
+      display: flex;
+      justify-content: flex-start;
+    }
+    .three-or-more{
+      display: flex;
+      justify-content: center;
+    }
+
   `;
+
+  initializeChart() {
+    const { totalArbitrages, successfulArbitrages, arbitragesWithProfit, arbitragesFailed } = this.data;
+    const canvas: HTMLCanvasElement = this.shadowRoot?.querySelector('#chart') as HTMLCanvasElement;
+    if(canvas){
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: [`OK ${successfulArbitrages}/${totalArbitrages}`, `KO ${arbitragesFailed}/${totalArbitrages}`],
+            datasets: [
+              {
+                data: [successfulArbitrages, arbitragesFailed],
+                backgroundColor: [ColorsEnum.green, ColorsEnum.red],
+                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)'],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom',
+              },
+            },
+          },
+        });
+      }
+    }
+    
+  }
+  override firstUpdated() {
+    this.initializeChart();
+  }
 
   override render() {
     const {
-      totalArbitrages,
-      successfulArbitrages,
-      arbitragesWithProfit,
-      arbitragesWithLoss,
       profitLoss,
       averageTime,
       usedCurrencies,
       totalFees,
       arbitrages,
-      date,
-      arbitragesFailed
+      date
     } = this.data;
     return html`
     <div class="daily">
@@ -73,16 +115,15 @@ export class DailyPerformance extends LitElement {
             <mat-card>
               <h2>Total Arbitrages</h2>
               <mat-card-content>
-                <b>Total:</b>${ totalArbitrages } <b>Successful:</b>${successfulArbitrages} <b>With
-                  Profit:</b>${arbitragesWithProfit} <b>failed:</b>${arbitragesFailed}
+                <div style="width:30%"><canvas id="chart"></canvas></div>
               </mat-card-content>
             </mat-card>
           </div>
           <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
             <mat-card>
               <mat-card-title>Profit/loss</mat-card-title>
-              <mat-card-content style="color: ${ profitLoss >= 0 ? 'green' : 'red'}">
-                ${profitLoss}$
+              <mat-card-content style="color: ${profitLoss >= 0 ? 'green' : 'red'}">
+                ${profitLoss.toFixed(2)}$
               </mat-card-content>
             </mat-card>
           </div>
@@ -96,8 +137,10 @@ export class DailyPerformance extends LitElement {
           </div>
         </div>
         <h2>Arbitrages</h2>
-        <div class="min-container">
-          ${arbitrages.map(arbitrage => html`<arbitrage-min-card  .arbitrage=${arbitrage} />`)}
+        <div class="${arbitrages.length >= 3? "three-or-more":"three-or-less"}">
+          <div class="min-container ">
+            ${arbitrages.map(arbitrage => html`<arbitrage-min-card .arbitrage=${arbitrage} />`)}
+          </div>
         </div>
       </div>
       <br>

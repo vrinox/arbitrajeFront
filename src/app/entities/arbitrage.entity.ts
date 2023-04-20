@@ -1,7 +1,7 @@
 
-import { AccountBalance, ArbitrageLog, CalculatedOrderData, IArbitrage, Order } from '../interfaces/arbitrage.interface';
-import { ArbitrageStatusEnum } from '../enum/arbitrage.enum';
-import { roundToPrecision } from '../utils/math.util';
+import { AccountBalance, ArbitrageLog, CalculatedOrderData, IArbitrage, Order } from '../core/interfaces/arbitrage.interface';
+import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
+import { roundToPrecision } from '../core/utils/math.util';
 
 export class Arbitrage implements IArbitrage {
   arbitrageId: string;
