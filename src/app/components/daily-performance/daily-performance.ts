@@ -1,9 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DailyPerformanceData } from '../../core/interfaces/arbitrage.interface';
-import { Chart, PieController, ArcElement, Legend, Tooltip } from 'chart.js';
 import { ColorsEnum } from '../../core/enum/colors.enum';
-Chart.register(PieController, ArcElement, Legend, Tooltip);
 @customElement('daily-performance')
 export class DailyPerformance extends LitElement {
   @property({ type: Object }) data: DailyPerformanceData = {
@@ -59,43 +57,7 @@ export class DailyPerformance extends LitElement {
       display: flex;
       justify-content: center;
     }
-
   `;
-
-  initializeChart() {
-    const { totalArbitrages, successfulArbitrages, arbitragesWithProfit, arbitragesFailed } = this.data;
-    const canvas: HTMLCanvasElement = this.shadowRoot?.querySelector('#chart') as HTMLCanvasElement;
-    if(canvas){
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: [`OK ${successfulArbitrages}/${totalArbitrages}`, `KO ${arbitragesFailed}/${totalArbitrages}`],
-            datasets: [
-              {
-                data: [successfulArbitrages, arbitragesFailed],
-                backgroundColor: [ColorsEnum.green, ColorsEnum.red],
-                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)'],
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            plugins: {
-              legend: {
-                position: 'bottom',
-              },
-            },
-          },
-        });
-      }
-    }
-    
-  }
-  override firstUpdated() {
-    this.initializeChart();
-  }
 
   override render() {
     const {
@@ -104,8 +66,23 @@ export class DailyPerformance extends LitElement {
       usedCurrencies,
       totalFees,
       arbitrages,
-      date
+      date,
+      successfulArbitrages,
+      totalArbitrages,
+      arbitragesFailed,
+      arbitragesWithLoss,
+      arbitragesWithProfit
     } = this.data;
+    const data1 = {
+      labels: [`OK ${successfulArbitrages}/${totalArbitrages}`, `KO ${arbitragesFailed}/${totalArbitrages}`],
+      data: [successfulArbitrages, arbitragesFailed],
+      colors: [ColorsEnum.blue, ColorsEnum.grey]
+    }
+    const data2 = {
+      labels: [`Profit ${arbitragesWithProfit}/${totalArbitrages}`, `Loss ${arbitragesWithLoss}/${totalArbitrages}`],
+      data: [arbitragesWithProfit, arbitragesWithLoss],
+      colors: [ColorsEnum.green, ColorsEnum.red]
+    }
     return html`
     <div class="daily">
       <div class="title-bar"> ${date}</div>
@@ -114,8 +91,9 @@ export class DailyPerformance extends LitElement {
           <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
             <mat-card>
               <h2>Total Arbitrages</h2>
-              <mat-card-content>
-                <div style="width:30%"><canvas id="chart"></canvas></div>
+              <mat-card-content style="display:flex">
+                <div style="width:30%"><min-donnut-chart .data=${data1} /></div>
+                <div style="width:30%"><min-donnut-chart .data=${data2} /></div>
               </mat-card-content>
             </mat-card>
           </div>

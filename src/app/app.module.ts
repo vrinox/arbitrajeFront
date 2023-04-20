@@ -22,6 +22,7 @@ import './components/arbitrage-detail/real-order-display';
 import './components/arbitrage-detail/arbitrage-log';
 import './components/daily-performance/daily-performance';
 import './components/arbitrage-min-card';
+import './components/arbitrage-detail/min-donnut-chart';
 
 @NgModule({
   declarations: [
