@@ -95,7 +95,6 @@ export interface DailyPerformanceData {
   successfulArbitrages: number;
   arbitragesWithProfit: number;
   arbitragesWithLoss: number;
-  failedArbitrages: number;
   usedCurrencies: { [currency: string]: number };
   totalFees: number;
   totalArbitrages: number;

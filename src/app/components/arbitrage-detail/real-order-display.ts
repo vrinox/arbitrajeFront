@@ -1,7 +1,6 @@
-// arbitrage-detail.ts
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Order, PriceVariationItem } from '../interfaces/arbitrage.interface';
+import { Order } from '../../interfaces/arbitrage.interface';
 
 @customElement('real-order-display')
 export class RealOrderDisplay extends LitElement {

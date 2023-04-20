@@ -1,10 +1,10 @@
 // arbitrage-detail.ts
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Arbitrage } from '../entities/arbitrage.entity';
-import { ArbitrageStatusEnum } from '../enum/arbitrage.enum';
-import { roundToPrecision } from '../utils/math.util';
-import { PriceVariationItem } from '../interfaces/arbitrage.interface';
+import { Arbitrage } from '../../entities/arbitrage.entity';
+import { ArbitrageStatusEnum } from '../../enum/arbitrage.enum';
+import { roundToPrecision } from '../../utils/math.util';
+import { PriceVariationItem } from '../../interfaces/arbitrage.interface';
 
 @customElement('arbitrage-detail')
 export class ArbitrageDetail extends LitElement {
@@ -48,7 +48,6 @@ export class ArbitrageDetail extends LitElement {
         justify-content: space-between;
         align-items: center;
       }
-
   `;
 
   getPriceVariations(arbitrage: Arbitrage): PriceVariationItem[] {
@@ -66,7 +65,6 @@ export class ArbitrageDetail extends LitElement {
   }
 
   getSimulationDifferences(): number {
-    console.log(this.arbitrage.status);
     if (this.arbitrage.status !== ArbitrageStatusEnum.END) return 0;
     const simulatedProfit = this.arbitrage.getSimulateProfit();
     const realProfit = this.arbitrage.calculateRealProfit();
@@ -82,38 +80,38 @@ export class ArbitrageDetail extends LitElement {
     const realProfit = this.arbitrage.calculateRealProfit();
     const feeCurrency = this.arbitrage.feeCurrency;
     return html`
-  <div class="detail">
-    <h2>Arbitrage Detail</h2>
-    <div class="grid-container">
-      <div>
-        <h3>Data:</h3>
-        <i>Status:</i> ${this.arbitrage.status}<br>
-        <i>Arbitrage Id:</i> ${this.arbitrage.arbitrageId}<br>
-        <i>Simulation Differences:</i><span style="color: ${ simulationDiff >= 0 ? 'green' : 'red'}"> ${simulationDiff}$</span><br>
-        <i>Real Profit/Loss:</i><span style="color: ${ realProfit >= 0 ? 'green' : 'red'}"> ${realProfit}$</span><br>
-        <i>Execution Time:</i> ${this.getExecutionTime()} min<br>
-        <i>Fees:</i> ${this.arbitrage.calculateRealFees()} ${feeCurrency}<br>
+    <div class="detail">
+      <h2>Arbitrage Detail</h2>
+      <div class="grid-container">
+        <div>
+          <h3>Data:</h3>
+          <i>Status:</i> ${this.arbitrage.status}<br>
+          <i>Arbitrage Id:</i> ${this.arbitrage.arbitrageId}<br>
+          <i>Simulation Differences:</i><span style="color: ${ simulationDiff >= 0 ? 'forestgreen' : 'firebrick'}"> ${simulationDiff}$</span><br>
+          <i>Real Profit/Loss:</i><span style="color: ${ realProfit >= 0 ? 'forestgreen' : 'firebrick'}"> ${realProfit}$</span><br>
+          <i>Execution Time:</i> ${this.getExecutionTime()} min<br>
+          <i>Fees:</i> ${this.arbitrage.calculateRealFees()} ${feeCurrency}<br>
+        </div>
+        <div>
+          <h3>Price Variations:</h3>
+          <mat-list class="price-variations">
+            ${this.getPriceVariations(this.arbitrage).map(priceVariation => html`
+            <price-variation-list-item .priceVariationItem=${priceVariation}>`)}
+          </mat-list>
+        </div>
+        <div>
+          <h3>Real Orders:</h3>
+          <mat-list>
+            ${this.arbitrage.realOrders.map(order => html`<real-order-display .order=${order}>`)}
+          </mat-list>
+        </div>
+        <div style="width: 100%">
+          <h3>Log:</h3>
+          <ul>
+            ${this.arbitrage.log.map(logData => html`<arbitrage-log-display .log=${logData} />`)}
+          </ul>
+        </div>
       </div>
-      <div>
-        <h3>Price Variations:</h3>
-        <mat-list class="price-variations">
-          ${this.getPriceVariations(this.arbitrage).map(priceVariation => html`
-          <price-variation-list-item .priceVariationItem=${priceVariation}>`)}
-        </mat-list>
-      </div>
-      <div>
-        <h3>Real Orders:</h3>
-        <mat-list>
-          ${this.arbitrage.realOrders.map(order => html`<real-order-display .order=${order}>`)}
-        </mat-list>
-      </div>
-      <div style="width: 100%">
-        <h3>Log:</h3>
-        <ul>
-          ${this.arbitrage.log.map(log => html` <li>[${log.step}] ${log.msg} </li> `)}
-        </ul>
-      </div>
-    </div>
-  </div>`;
+    </div>`;
   }
 }

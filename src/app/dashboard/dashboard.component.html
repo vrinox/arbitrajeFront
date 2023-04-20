@@ -1,35 +1,3 @@
-<mat-card *ngFor="let daily of dailyPerformance" class="daily">
-  <mat-card-title>Daily Performance {{daily.date}}</mat-card-title>
-  <mat-card-content>
-    <div fxLayout="row wrap" fxLayoutGap="20px">
-      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
-        <mat-card>
-          <mat-card-title>Total Arbitrages</mat-card-title>
-          <mat-card-content>
-            <b>Total:</b>{{ daily.totalArbitrages }} <b>Successful:</b>{{daily.successfulArbitrages}} <b>With
-              Profit:</b>{{daily.arbitragesWithProfit}} <b>failed:</b>{{daily.arbitragesFailed}}
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
-        <mat-card>
-          <mat-card-title>Profit/loss</mat-card-title>
-          <mat-card-content [ngStyle]="{'color': daily.profitLoss >= 0 ? 'green' : 'red'}">
-            {{ daily.profitLoss }}$
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
-        <mat-card>
-          <mat-card-title>Fees</mat-card-title>
-          <mat-card-content>
-            {{ daily.totalFees }}BNB
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-
-    <arbitrage-detail *ngFor="let arbitrage of daily.arbitrages" [arbitrage]="arbitrage"></arbitrage-detail>
-  </mat-card-content>
-  <br>
-</mat-card>
+<div class="dashboard-container">
+  <daily-performance *ngFor="let daily of dailyPerformance" [data]="daily"></daily-performance>
+</div>

@@ -16,9 +16,12 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ArbitrageFactory } from './factories/arbitrage.factory';
 
-import './components/arbitrage-detail';
-import './components/price-variation-list-item';
-import './components/real-order-display';
+import './components/arbitrage-detail/arbitrage-detail';
+import './components/arbitrage-detail/price-variation-list-item';
+import './components/arbitrage-detail/real-order-display';
+import './components/arbitrage-detail/arbitrage-log';
+import './components/daily-performance/daily-performance';
+import './components/arbitrage-min-card';
 
 @NgModule({
   declarations: [

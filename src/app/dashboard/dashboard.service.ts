@@ -22,7 +22,6 @@ export class DashboardService {
       arbitragesWithProfit: 0,
       arbitragesWithLoss: 0,
       profitLoss: 0,
-      failedArbitrages: 0,
       averageTime: 0,
       usedCurrencies: {},
       totalFees: 0,
@@ -38,7 +37,6 @@ export class DashboardService {
       dailyPerformance.arbitragesWithLoss += arbitrage.calculateRealProfit() < 0 ? 1 : 0;
       dailyPerformance.arbitragesFailed += arbitrage.status === ArbitrageStatusEnum.REVERSED? 1 : 0;
       dailyPerformance.profitLoss += roundToPrecision(arbitrage.calculateRealProfit(), 2);
-      dailyPerformance.failedArbitrages += arbitrage.status === ArbitrageStatusEnum.REVERSED? 1 : 0;
       dailyPerformance.averageTime += (arbitrage.finishAt || 0) - (arbitrage.createdAt || 0);
       dailyPerformance.totalFees += arbitrage.calculateRealFees();
 

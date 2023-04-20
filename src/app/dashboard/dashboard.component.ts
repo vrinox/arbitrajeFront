@@ -21,7 +21,6 @@ export class DashboardComponent implements OnInit {
     arbitragesWithProfit: 0,
     arbitragesWithLoss: 0,
     profitLoss: 0,
-    failedArbitrages: 0,
     averageTime: 0,
     usedCurrencies: {},
     totalFees: 0,
@@ -38,11 +37,6 @@ export class DashboardComponent implements OnInit {
       this.arbitrages = arbitrages.filter(({ realOrders }) => realOrders.length).map(this.arbitrageFactory.createArbitrage);
       this.groupArbitragesByDay();
       this.dailyPerformance = Object.entries(this.arbitragesByDay).map(([day, arbitrages]) => this.dashboardService.getDailyPerformance({ day, arbitrages }))
-      Object.values(this.arbitragesByDay).forEach((day)=>{
-        const first = day[0];
-        const last = day[day.length -1];
-        console.log(first.BalanceUpdates[ArbitrageStatusEnum.INIT]['USDT'], last.BalanceUpdates[last.status]['USDT'])
-      })
     });
   }
   groupArbitragesByDay(): void {
@@ -76,6 +70,4 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.socketService.getAllArbitrages()
   }
-  
-
 }
