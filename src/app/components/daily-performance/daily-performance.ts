@@ -76,53 +76,57 @@ export class DailyPerformance extends LitElement {
     const data1 = {
       labels: [`OK ${successfulArbitrages}/${totalArbitrages}`, `KO ${arbitragesFailed}/${totalArbitrages}`],
       data: [successfulArbitrages, arbitragesFailed],
-      colors: [ColorsEnum.blue, ColorsEnum.grey]
+      colors: [ColorsEnum.blue, ColorsEnum.grey],
+      legend:true
     }
     const data2 = {
       labels: [`Profit ${arbitragesWithProfit}/${totalArbitrages}`, `Loss ${arbitragesWithLoss}/${totalArbitrages}`],
       data: [arbitragesWithProfit, arbitragesWithLoss],
-      colors: [ColorsEnum.green, ColorsEnum.red]
+      colors: [ColorsEnum.green, ColorsEnum.red],
+      legend:true
+    }
+    const data3 = {
+      labels: Object.keys(usedCurrencies),
+      data: Object.values(usedCurrencies),
+      legend: false
     }
     return html`
-    <div class="daily">
-      <div class="title-bar"> ${date}</div>
-      <div class="content">
-        <div fxLayout="row wrap" fxLayoutGap="20px">
-          <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
-            <mat-card>
-              <h2>Total Arbitrages</h2>
-              <mat-card-content style="display:flex">
-                <div style="width:30%"><min-donnut-chart .data=${data1} /></div>
-                <div style="width:30%"><min-donnut-chart .data=${data2} /></div>
-              </mat-card-content>
-            </mat-card>
-          </div>
-          <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
-            <mat-card>
-              <mat-card-title>Profit/loss</mat-card-title>
-              <mat-card-content style="color: ${profitLoss >= 0 ? 'green' : 'red'}">
-                ${profitLoss.toFixed(2)}$
-              </mat-card-content>
-            </mat-card>
-          </div>
-          <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
-            <mat-card>
-              <mat-card-title>Fees</mat-card-title>
-              <mat-card-content>
-                ${totalFees}BNB
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-        <h2>Arbitrages</h2>
-        <div class="${arbitrages.length >= 3? "three-or-more":"three-or-less"}">
-          <div class="min-container ">
-            ${arbitrages.map(arbitrage => html`<arbitrage-min-card .arbitrage=${arbitrage} />`)}
-          </div>
+   <div class="daily">
+    <div class="title-bar"> ${date}</div>
+    <div class="content">
+      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
+        <mat-card>
+          <b>Profit/loss</b>
+          <span style="color: ${profitLoss >= 0 ? ColorsEnum.green : ColorsEnum.red}">
+            ${profitLoss.toFixed(2)}$
+          </span>
+        </mat-card>
+      </div>
+      <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
+        <mat-card>
+          <b>Fees</b> ${totalFees.toFixed(6)}BNB
+        </mat-card>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px">
+        <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
+          <mat-card>
+            <h2>Total Arbitrages</h2>
+            <mat-card-content style="display:flex">
+              <div style="width:30%"><min-donnut-chart .data=${data1} /></div>
+              <div style="width:30%"><min-donnut-chart .data=${data2} /></div>
+              <div style="width:30%"><min-donnut-chart .data=${data3} /></div>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
-      <br>
-  </div>
-  `;
+      <h2>Arbitrages</h2>
+      <div class="${arbitrages.length >= 3? " three-or-more":"three-or-less"}">
+        <div class="min-container ">
+          ${arbitrages.map(arbitrage => html`<arbitrage-min-card .arbitrage=${arbitrage} />`)}
+        </div>
+      </div>
+    </div>
+    <br>
+  </div>`;
   }
 }
