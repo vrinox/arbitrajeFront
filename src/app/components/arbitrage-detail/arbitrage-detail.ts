@@ -1,5 +1,5 @@
 // arbitrage-detail.ts
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Arbitrage } from '../../entities/arbitrage.entity';
 import { ArbitrageStatusEnum } from '../../core/enum/arbitrage.enum';
@@ -77,6 +77,7 @@ export class ArbitrageDetail extends LitElement {
   }
 
   override render() {
+    if(!this.arbitrage.arbitrageId) return nothing;
     const simulationDiff = this.getSimulationDifferences();
     const realProfit = this.arbitrage.calculateRealProfit();
     const feeCurrency = this.arbitrage.feeCurrency;

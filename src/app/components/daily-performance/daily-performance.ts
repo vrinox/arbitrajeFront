@@ -26,13 +26,7 @@ export class DailyPerformance extends LitElement {
       width: calc(50vw - 30px);
       max-width:500px;
     }
-    .min-container{
-      display: flex;
-      width: calc(100vw -20px);
-      overflow: hidden;
-      flex-wrap: wrap;
-      width: 456px;
-    }
+    
     .daily{
       color: black;
       border-radius: 8px;
@@ -49,15 +43,12 @@ export class DailyPerformance extends LitElement {
     .content{
       padding:16px;
     }
-    .three-or-less{
-      display: flex;
-      justify-content: flex-start;
-    }
-    .three-or-more{
-      display: flex;
-      justify-content: center;
-    }
+    
   `;
+
+  handleArbitrageSelected(event: CustomEvent){
+    this.dispatchEvent(new CustomEvent('arbitrageSelected',{detail: event.detail}));
+  }
 
   override render() {
     const {
@@ -120,11 +111,7 @@ export class DailyPerformance extends LitElement {
         </div>
       </div>
       <h2>Arbitrages</h2>
-      <div class="${arbitrages.length >= 3? " three-or-more":"three-or-less"}">
-        <div class="min-container ">
-          ${arbitrages.map(arbitrage => html`<arbitrage-min-card .arbitrage=${arbitrage} />`)}
-        </div>
-      </div>
+        <arbitrage-min-list .arbitrages=${arbitrages} @arbitrageSelected=${this.handleArbitrageSelected} ></arbitrage-min-list> 
     </div>
     <br>
   </div>`;

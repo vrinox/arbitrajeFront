@@ -1,0 +1,28 @@
+<div class="selector-bar">
+  <div class="left">
+    <select (change)="changeDayMain($event)">
+      <option value="">Seleccione</option>
+      <option value="{{day.date}}" *ngFor="let day of days">{{day.date}}</option>
+    </select>
+  </div>
+  <div class="right">
+    <select (change)="changeDayCompare($event)">
+      <option value="">Seleccione</option>
+      <option value="{{day.date}}" *ngFor="let day of days">{{day.date}}</option>
+    </select>
+  </div>
+</div>
+<div class="left" *ngIf="dayMainSelected">
+  <arbitrage-min-list 
+    [arbitrages]="dayMainSelected.arbitrages" 
+    (arbitrageSelected)="handleMainArbitrageSelected($any($event))" 
+  ></arbitrage-min-list> 
+  <arbitrage-detail [arbitrage]="mainArbitrage" *ngIf="mainArbitrage.arbitrageId"/>
+</div>
+<div class="right" *ngIf="dayCompareSelected">
+  <arbitrage-min-list 
+    [arbitrages]="dayCompareSelected.arbitrages" 
+    (arbitrageSelected)="handleCompareArbitrageSelected($any($event))" 
+  ></arbitrage-min-list> 
+  <arbitrage-detail [arbitrage]="compareArbitrage" *ngIf="compareArbitrage.arbitrageId" />
+</div>

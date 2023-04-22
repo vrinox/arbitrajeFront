@@ -54,4 +54,32 @@ export class DashboardService {
 
     return dailyPerformance;
   }
+  groupArbitragesByDay({arbitrages}:{arbitrages:Arbitrage[]}): { [key: string]: Arbitrage[] } {
+    const temp: any = {};
+
+    arbitrages.forEach((arbitrage) => {
+      const date = new Date(arbitrage.createdAt);
+      const dayKey = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+
+      if (!temp[dayKey]) {
+        temp[dayKey] = [];
+      }
+      temp[dayKey].push(arbitrage);
+    });
+
+    // Sort the date keys
+    const sortedKeys = Object.keys(temp).sort((a, b) => {
+      const [dayA, monthA, yearA] = a.split('-').map(Number);
+      const [dayB, monthB, yearB] = b.split('-').map(Number);
+
+      return new Date(yearB, monthB - 1, dayB).getTime() - new Date(yearA, monthA - 1, dayA).getTime();
+    });
+    let arbitragesByDay;
+    // Create the final sorted object
+    arbitragesByDay = sortedKeys.reduce((acc: any, key) => {
+      acc[key] = temp[key];
+      return acc;
+    }, {});
+    return arbitragesByDay
+  }
 }

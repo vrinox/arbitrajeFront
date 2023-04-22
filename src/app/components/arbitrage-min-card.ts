@@ -46,13 +46,16 @@ export class ArbitrageMinCard extends LitElement {
     }
     return html`<i class="material-icons" aria-hidden="false" >${icons[this.arbitrage.status]}</i>`;
   }
+  handleClick() {
+    this.dispatchEvent(new CustomEvent('arbitrageSelected', { detail: this.arbitrage.arbitrageId }));
+  }
   override render() {
     const {symbols } = this.arbitrage;
     const [ticker, intermediate] = symbols[1].split('/');
     const profitLoss = this.arbitrage.calculateRealProfit();
     return html`
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <div class='card' style="background-color:${profitLoss >= 0? ColorsEnum.green: ColorsEnum.red}">
+    <div class='card' style="background-color:${profitLoss >= 0? ColorsEnum.green: ColorsEnum.red}" @click=${this.handleClick}>
       <div class='title'>[${intermediate}/${ticker}] 
         <div class='icon-cont'>
           ${this.printStatusIcon()}

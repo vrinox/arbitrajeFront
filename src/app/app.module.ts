@@ -15,19 +15,25 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ArbitrageFactory } from './factories/arbitrage.factory';
+import { ArbitrageDetailComponent } from './arbitrage-detail/arbitrage-detail.component';
+import { CompareComponent } from './compare/compare.component';
 
 import './components/arbitrage-detail/arbitrage-detail';
 import './components/arbitrage-detail/price-variation-list-item';
 import './components/arbitrage-detail/real-order-display';
 import './components/arbitrage-detail/arbitrage-log';
 import './components/daily-performance/daily-performance';
+import './components/daily-performance/arbitrage-min-list';
 import './components/arbitrage-min-card';
+import './components/app-header';
 import './components/arbitrage-detail/min-donnut-chart';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    ArbitrageDetailComponent,
+    CompareComponent
   ],
   imports: [
     BrowserModule,
