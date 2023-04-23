@@ -1,3 +1,4 @@
+<monthly-resumen [data]="resumen" />
 <div class="dashboard-container">
   <daily-performance *ngFor="let daily of dailyPerformance" [data]="daily" (arbitrageSelected)="handleArbitrageSelected($any($event))"/>
 </div>

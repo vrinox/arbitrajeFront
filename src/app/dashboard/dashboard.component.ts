@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketIOServiceService } from '../socket-ioservice.service';
 import { Arbitrage } from '../entities/arbitrage.entity';
-import { DailyPerformanceData, IArbitrage } from '../core/interfaces/arbitrage.interface';
-import { ArbitrageFactory } from '../factories/arbitrage.factory';
+import { DailyPerformanceData } from '../core/interfaces/arbitrage.interface';
 import { DashboardService } from './dashboard.service';
-import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
-import { roundToPrecision } from '../core/utils/math.util';
 import { SessionService } from '../session.service';
 import { Router } from '@angular/router';
 
@@ -17,7 +14,8 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   arbitrages: Arbitrage[] = [];
   arbitragesByDay: { [key: string]: Arbitrage[] } = {};
-  dailyPerformance: DailyPerformanceData[] = [{
+  dailyPerformance: DailyPerformanceData[] = [];
+  resumen: DailyPerformanceData = {
     totalArbitrages: 0,
     successfulArbitrages: 0,
     arbitragesWithProfit: 0,
@@ -29,7 +27,7 @@ export class DashboardComponent implements OnInit {
     arbitrages: [],
     date: '',
     arbitragesFailed: 0
-  }];
+  }
   constructor(
     private dashboardService: DashboardService,
     private session: SessionService,
@@ -41,6 +39,7 @@ export class DashboardComponent implements OnInit {
       this.arbitrages = arbitrages;
       this.arbitragesByDay = this.dashboardService.groupArbitragesByDay({arbitrages});
       this.dailyPerformance = Object.entries(this.arbitragesByDay).map(([day, arbitrages]) => this.dashboardService.getDailyPerformance({ day, arbitrages }))
+      this.resumen = this.dashboardService.getDailyPerformance({day: 'Resumen', arbitrages});
     });
   }
 

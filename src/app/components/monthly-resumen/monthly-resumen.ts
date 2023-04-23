@@ -3,8 +3,8 @@ import { customElement, property } from 'lit/decorators.js';
 import { DailyPerformanceData } from '../../core/interfaces/arbitrage.interface';
 import { ColorsEnum } from '../../core/enum/colors.enum';
 import { msToTime } from '../../core/utils/time.util';
-@customElement('daily-performance')
-export class DailyPerformance extends LitElement {
+@customElement('monthly-resumen')
+export class MonthlyResumen extends LitElement {
   @property({ type: Object }) data: DailyPerformanceData = {
     totalArbitrages: 0,
     successfulArbitrages: 0,
@@ -24,17 +24,15 @@ export class DailyPerformance extends LitElement {
       display: block;
       font-family: 'Roboto', sans-serif;
       margin:10px;
-      width: calc(50vw - 30px);
-      max-width:500px;
     }
     
-    .daily{
+    .monthly{
       color: black;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      max-width: calc(50vw - 62px);
       overflow:hidden;
     }
+
     .title-bar{
       background-color: ${unsafeCSS(ColorsEnum.blue)};
       padding:10px;
@@ -57,8 +55,6 @@ export class DailyPerformance extends LitElement {
       averageTime,
       usedCurrencies,
       totalFees,
-      arbitrages,
-      date,
       successfulArbitrages,
       totalArbitrages,
       arbitragesFailed,
@@ -80,11 +76,11 @@ export class DailyPerformance extends LitElement {
     const data3 = {
       labels: Object.keys(usedCurrencies),
       data: Object.values(usedCurrencies),
-      legend: false
+      legend:true
     }
     return html`
-   <div class="daily">
-    <div class="title-bar"> ${date}</div>
+   <div class="monthly">
+    <div class="title-bar"> Resumen</div>
     <div class="content">
       <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
         <mat-card>
@@ -109,15 +105,13 @@ export class DailyPerformance extends LitElement {
           <mat-card>
             <h2>Total Arbitrages</h2>
             <mat-card-content style="display:flex">
-              <div style="width:30%"><min-donnut-chart .data=${data1} /></div>
-              <div style="width:30%"><min-donnut-chart .data=${data2} /></div>
-              <div style="width:30%"><min-donnut-chart .data=${data3} /></div>
+              <div style="width:32%"><min-donnut-chart .data=${data1} /></div>
+              <div style="width:32%"><min-donnut-chart .data=${data2} /></div>
+              <div style="width:32%"><min-donnut-chart .data=${data3} /></div>
             </mat-card-content>
           </mat-card>
         </div>
       </div>
-      <h2>Arbitrages</h2>
-        <arbitrage-min-list .arbitrages=${arbitrages} @arbitrageSelected=${this.handleArbitrageSelected} ></arbitrage-min-list> 
     </div>
     <br>
   </div>`;

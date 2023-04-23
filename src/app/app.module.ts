@@ -27,6 +27,7 @@ import './components/daily-performance/arbitrage-min-list';
 import './components/arbitrage-min-card';
 import './components/app-header';
 import './components/arbitrage-detail/min-donnut-chart';
+import './components/monthly-resumen/monthly-resumen';
 
 @NgModule({
   declarations: [

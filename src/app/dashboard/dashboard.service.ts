@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-
-import { BehaviorSubject } from 'rxjs';
 import { DailyPerformanceData } from '../core/interfaces/arbitrage.interface';
 import { Arbitrage } from '../entities/arbitrage.entity';
 import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
@@ -10,7 +8,6 @@ import { roundToPrecision } from '../core/utils/math.util';
   providedIn: 'root',
 })
 export class DashboardService {
-  private arbitrages: BehaviorSubject<Arbitrage[]> = new BehaviorSubject([] as Arbitrage[]);
 
   constructor() {}
 
@@ -43,14 +40,12 @@ export class DashboardService {
         contValidExecution++;
         dailyPerformance.averageTime += arbitrage.finishAt - arbitrage.createdAt 
       }
-      
-      arbitrage.getCurrenciesInvolved().forEach((currency) => {
-        if (dailyPerformance.usedCurrencies[currency]) {
-          dailyPerformance.usedCurrencies[currency]++;
-        } else {
-          dailyPerformance.usedCurrencies[currency] = 1;
-        }
-      });
+      const currency = arbitrage.symbols[2].split('/')[0];
+      if (dailyPerformance.usedCurrencies[currency]) {
+        dailyPerformance.usedCurrencies[currency]++;
+      } else {
+        dailyPerformance.usedCurrencies[currency] = 1;
+      }
     });
 
     // Calculate the average time

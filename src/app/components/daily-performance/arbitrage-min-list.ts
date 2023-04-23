@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Order } from '../../core/interfaces/arbitrage.interface';
 import { Arbitrage } from '../../entities/arbitrage.entity';
 
 @customElement('arbitrage-min-list')
