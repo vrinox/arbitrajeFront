@@ -23,6 +23,7 @@ export class ArbitrageDetail extends LitElement {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         margin-bottom: 16px;
         padding: 16px;
+        margin:10px;
       }
 
       h3 {
@@ -79,11 +80,12 @@ export class ArbitrageDetail extends LitElement {
   override render() {
     if(!this.arbitrage.arbitrageId) return nothing;
     const simulationDiff = this.getSimulationDifferences();
+    const [intermediate, ticker] = this.arbitrage.symbols[1].split('/');
     const realProfit = this.arbitrage.calculateRealProfit();
     const feeCurrency = this.arbitrage.feeCurrency;
     return html`
     <div class="detail">
-      <h2>Arbitrage Detail</h2>
+      <h2>Arbitrage [${intermediate}/${ticker}]</h2>
       <div class="grid-container">
         <div>
           <h3>Data:</h3>

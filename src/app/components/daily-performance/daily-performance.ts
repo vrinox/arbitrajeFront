@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS} from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DailyPerformanceData } from '../../core/interfaces/arbitrage.interface';
 import { ColorsEnum } from '../../core/enum/colors.enum';
@@ -35,7 +35,7 @@ export class DailyPerformance extends LitElement {
       overflow:hidden;
     }
     .title-bar{
-      background-color: #000;
+      background-color: ${unsafeCSS(ColorsEnum.blue)};
       padding:10px;
       color:white;
       font-size: 2em;
@@ -43,7 +43,6 @@ export class DailyPerformance extends LitElement {
     .content{
       padding:16px;
     }
-    
   `;
 
   handleArbitrageSelected(event: CustomEvent){
