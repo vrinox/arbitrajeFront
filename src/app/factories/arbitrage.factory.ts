@@ -1,6 +1,8 @@
 import { Arbitrage } from "../entities/arbitrage.entity";
 import { ArbitrageStatusEnum } from "../core/enum/arbitrage.enum";
 import { IArbitrage, Order } from "../core/interfaces/arbitrage.interface";
+import { formatDate } from "../core/utils/time.util";
+
 
 export class ArbitrageFactory {
   public createArbitrage(data: IArbitrage): Arbitrage {
@@ -12,6 +14,7 @@ export class ArbitrageFactory {
       symbols: data.symbols,
     });
     // Populate other properties as needed
+    
     arbitrage.realOrders = data.realOrders || [];
     arbitrage.calculatedOrders = data.calculatedOrders || [];
     arbitrage.BalanceUpdates = data.BalanceUpdates || {};
@@ -20,7 +23,6 @@ export class ArbitrageFactory {
     arbitrage.createdAt = new Date(data.createdAt).getTime();
     arbitrage.finishAt =  new Date(data.finishAt).getTime();
     arbitrage.log = data.log || [];
-
     return arbitrage;
   }
 }

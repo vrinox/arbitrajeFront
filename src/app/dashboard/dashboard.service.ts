@@ -29,7 +29,7 @@ export class DashboardService {
       date: day,
       arbitragesFailed:0
     };
-
+    let contValidExecution = 0;
     arbitrages.forEach((arbitrage: Arbitrage) => {
       // Calculate the different metrics based on the arbitrage data
       dailyPerformance.successfulArbitrages += arbitrage.status === ArbitrageStatusEnum.END ? 1 : 0;
@@ -37,9 +37,13 @@ export class DashboardService {
       dailyPerformance.arbitragesWithLoss += arbitrage.calculateRealProfit() < 0 ? 1 : 0;
       dailyPerformance.arbitragesFailed += arbitrage.status === ArbitrageStatusEnum.REVERSED? 1 : 0;
       dailyPerformance.profitLoss += roundToPrecision(arbitrage.calculateRealProfit(), 2);
-      dailyPerformance.averageTime += (arbitrage.finishAt || 0) - (arbitrage.createdAt || 0);
       dailyPerformance.totalFees += arbitrage.calculateRealFees();
-
+      
+      if(arbitrage.finishAt){
+        contValidExecution++;
+        dailyPerformance.averageTime += arbitrage.finishAt - arbitrage.createdAt 
+      }
+      
       arbitrage.getCurrenciesInvolved().forEach((currency) => {
         if (dailyPerformance.usedCurrencies[currency]) {
           dailyPerformance.usedCurrencies[currency]++;
@@ -50,7 +54,7 @@ export class DashboardService {
     });
 
     // Calculate the average time
-    dailyPerformance.averageTime /= arbitrages.length;
+    dailyPerformance.averageTime /= contValidExecution;
 
     return dailyPerformance;
   }

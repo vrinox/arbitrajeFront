@@ -2,6 +2,7 @@ import { LitElement, html, css, unsafeCSS} from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DailyPerformanceData } from '../../core/interfaces/arbitrage.interface';
 import { ColorsEnum } from '../../core/enum/colors.enum';
+import { msToTime } from '../../core/utils/time.util';
 @customElement('daily-performance')
 export class DailyPerformance extends LitElement {
   @property({ type: Object }) data: DailyPerformanceData = {
@@ -97,6 +98,11 @@ export class DailyPerformance extends LitElement {
           <b>Fees</b> ${totalFees.toFixed(6)}BNB
         </mat-card>
       </div>
+      ${isNaN(averageTime)? "": html`<div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100" >
+        <mat-card>
+          <b>Average Time</b> ${msToTime(averageTime)}
+        </mat-card>
+      </div>`}      
       <div fxLayout="row wrap" fxLayoutGap="20px">
         <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
           <mat-card>

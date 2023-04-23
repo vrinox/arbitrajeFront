@@ -6,6 +6,7 @@ import { ArbitrageStatusEnum } from '../../core/enum/arbitrage.enum';
 import { roundToPrecision } from '../../core/utils/math.util';
 import { PriceVariationItem } from '../../core/interfaces/arbitrage.interface';
 import { ColorsEnum } from '../../core/enum/colors.enum';
+import { formatDate, msToTime } from '../../core/utils/time.util';
 
 @customElement('arbitrage-detail')
 export class ArbitrageDetail extends LitElement {
@@ -74,7 +75,7 @@ export class ArbitrageDetail extends LitElement {
   }
   getExecutionTime(){
     if(!this.arbitrage.finishAt) return 0 
-    return ((this.arbitrage.finishAt - this.arbitrage.createdAt) / 60000).toFixed(2)
+    return msToTime(this.arbitrage.finishAt - this.arbitrage.createdAt)
   }
 
   override render() {
@@ -83,6 +84,7 @@ export class ArbitrageDetail extends LitElement {
     const [intermediate, ticker] = this.arbitrage.symbols[1].split('/');
     const realProfit = this.arbitrage.calculateRealProfit();
     const feeCurrency = this.arbitrage.feeCurrency;
+    const avgTime = this.arbitrage.finishAt - this.arbitrage.createdAt;
     return html`
     <div class="detail">
       <h2>Arbitrage [${intermediate}/${ticker}]</h2>
@@ -93,8 +95,13 @@ export class ArbitrageDetail extends LitElement {
           <i>Arbitrage Id:</i> ${this.arbitrage.arbitrageId}<br>
           <i>Simulation Differences:</i><span style="color: ${ simulationDiff >= 0 ? ColorsEnum.green : ColorsEnum.red}"> ${simulationDiff}$</span><br>
           <i>Real Profit/Loss:</i><span style="color: ${ realProfit >= 0 ? ColorsEnum.green : ColorsEnum.red}"> ${realProfit}$</span><br>
-          <i>Execution Time:</i> ${this.getExecutionTime()} min<br>
-          <i>Fees:</i> ${this.arbitrage.calculateRealFees()} ${feeCurrency}<br>
+          <i>Fees:</i> ${this.arbitrage.calculateRealFees()} ${feeCurrency}<br>          
+        </div>
+        <div>
+          <h3>Time</h3>
+          <i>Created At:</i>${formatDate(new Date(this.arbitrage.createdAt))}<br>
+          ${this.arbitrage.finishAt === 0? '': html`<i>Finish At:</i>${formatDate(new Date(this.arbitrage.finishAt))}</div><br>`}
+          ${this.arbitrage.finishAt === 0? '': html`<i>Execution:</i>${this.getExecutionTime()}</div>`}
         </div>
         <div>
           <h3>Price Variations:</h3>
