@@ -26,8 +26,8 @@ export class ArbitrageDetail extends LitElement {
         overflow: hidden;
         margin:10px;
       }
-      .container{
-        
+      
+      .container{        
         padding: 16px;
       }
 

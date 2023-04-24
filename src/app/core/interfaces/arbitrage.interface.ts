@@ -62,7 +62,8 @@ export interface Order {
   timeInForce: string
   transactTime?: number
   type: OrderType_LT
-  updateTime: number
+  updateTime: number,
+  updatedPrice?: number
 }
 export type OrderSide_LT = 'BUY' | 'SELL';
 export const enum OrderSide {
@@ -107,3 +108,4 @@ export interface DailyPerformanceData {
 
 export interface PriceVariationItem{ calculated: number, real: number, percentDiff: number }
 export interface BalanceUpdates{ [order: string]: AccountBalance }
+export interface exchangePricesCache{ [symbol: string]: { BUY: number, SELL: number, AVG: number } }

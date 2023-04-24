@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AccountBalance, IArbitrage, Order } from './core/interfaces/arbitrage.interface';
+import { AccountBalance, IArbitrage, Order, exchangePricesCache } from './core/interfaces/arbitrage.interface';
 import { Arbitrage } from './entities/arbitrage.entity';
 import { BehaviorSubject } from 'rxjs';
 import { ArbitrageFactory } from './factories/arbitrage.factory';
@@ -19,13 +19,21 @@ export class SocketIOServiceService {
   private arbitrages: BehaviorSubject<Arbitrage[]> = new BehaviorSubject([] as Arbitrage[]);
   activeArbitrage: BehaviorSubject<Arbitrage> = new BehaviorSubject({} as Arbitrage);
   account: BehaviorSubject<AccountSnapshot> = new BehaviorSubject({} as AccountSnapshot);
+  prices: BehaviorSubject<exchangePricesCache> = new BehaviorSubject({} as exchangePricesCache);
   isAccountConnected: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private arbitrageFactory: ArbitrageFactory) {
     this.socket = io(environment.socketUrl);
     this.listenForArbitrageUpdates();
     this.listenForActiveArbitrage();
-    this.listenForAccountUpdates();  
+    this.listenForAccountUpdates();
+    this.listenForPricesUpdate();
+  }
+
+  private listenForPricesUpdate(){
+    this.socket.on(SocketNotificationTypeEnum.PRICES_UPDATE, (data:exchangePricesCache) => {
+      this.prices.next(data);
+    })
   }
 
   private listenForAccountUpdates(){

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountSnapshot, SocketIOServiceService } from './socket-ioservice.service';
 import { Arbitrage } from './entities/arbitrage.entity';
+import { Order, exchangePricesCache } from './core/interfaces/arbitrage.interface';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,6 +13,7 @@ export class AppComponent {
   activeArbitrage: Arbitrage = {} as Arbitrage;
   accountSnapshot: AccountSnapshot = {} as AccountSnapshot;
   accountConnected: boolean = false;
+  prices: exchangePricesCache = {} as exchangePricesCache;
   constructor(
     private router: Router,
     private socket: SocketIOServiceService
@@ -21,9 +23,15 @@ export class AppComponent {
       this.activeArbitrage = (arbitrage.arbitrageId) ? arbitrage: {} as Arbitrage;
     });
     this.socket.account.subscribe((snapshot:AccountSnapshot)=>{
-      console.log(snapshot)
+      snapshot.orders = snapshot.orders?.map((order:Order)=>{
+        order.updatedPrice = Number(this.prices[order.symbol]);
+        return order;
+      })
       this.accountSnapshot = snapshot;
-    })
+    });
+    this.socket.prices.subscribe((data:exchangePricesCache)=>{
+      this.prices = data;
+    }) 
   }
   goToCompare(){
     this.router.navigate(['/compare']);

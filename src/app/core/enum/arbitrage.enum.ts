@@ -10,5 +10,6 @@ export enum SocketNotificationTypeEnum {
   SUCCESSFUL_ARBITRAGE = 'arbitrage',
   DAY_PERFORMANCE = 'arbitragesByDate',
   ACTIVE_ARBITRAGE = 'activeArbitrage',
-  ACCOUNT_UPDATE = 'accountUpdate'
+  ACCOUNT_UPDATE = 'accountUpdate',
+  PRICES_UPDATE = 'pricesUpdate'
 }

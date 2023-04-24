@@ -10,6 +10,9 @@ export class AccountStatusCard extends LitElement {
     orders: [] as Order[],
     balances: {}
   } as AccountSnapshot;
+  @property({ type: Array }) elapsedTimes: number[] = [];
+
+  private intervalId?: any;
 
   static override styles = css`
     :host {
@@ -33,7 +36,24 @@ export class AccountStatusCard extends LitElement {
       width: 50%;
     }
   `;
-
+  protected override firstUpdated() {
+    this.updateElapsedTimes();
+    this.intervalId = setInterval(() => {
+      this.updateElapsedTimes();
+    }, 1000);
+  }
+  private updateElapsedTimes() {
+    if(!this.accountSnapshot.orders) return ;
+    this.elapsedTimes = this.accountSnapshot.orders.map(
+      (order) => Date.now() - order.updateTime
+    );
+  }
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
   override render() {
     if(!this.accountSnapshot.balances) return nothing;
     return html`
@@ -49,13 +69,12 @@ export class AccountStatusCard extends LitElement {
       </div>
       <div class="orders">
         <strong>Orders:</strong><br>
-        ${this.accountSnapshot.orders.map((order:Order)=>{
-          const {side, origQty, price, updateTime} = order;
-          return html`<div>[${side}] ${Number(origQty)} at ${Number(price)} took:${msToTime(Date.now() - updateTime)}</div><br>`
+        ${this.accountSnapshot.orders.map((order:Order, index: number)=>{
+          const {side, origQty, price, updatedPrice} = order;
+          return html`<div>[${side}] ${Number(origQty)} at ${Number(price)} took:${msToTime(this.elapsedTimes[index])} updatedPrice:${updatedPrice}</div><br>`
         })}
       </div>
-    </div>
-    
+    </div>    
   `;
   }
 }
