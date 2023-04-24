@@ -2,6 +2,7 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Order } from '../core/interfaces/arbitrage.interface';
 import { AccountSnapshot } from '../socket-ioservice.service';
+import { formatDate, msToTime } from '../core/utils/time.util';
 
 @customElement('account-status-card')
 export class AccountStatusCard extends LitElement {
@@ -49,8 +50,8 @@ export class AccountStatusCard extends LitElement {
       <div class="orders">
         <strong>Orders:</strong><br>
         ${this.accountSnapshot.orders.map((order:Order)=>{
-          const {side, origQty, price} = order;
-          return html`<div>[${side}] ${Number(origQty)} at ${Number(price)} </div><br>`
+          const {side, origQty, price, updateTime} = order;
+          return html`<div>[${side}] ${Number(origQty)} at ${Number(price)} took:${msToTime(Date.now() - updateTime)}</div><br>`
         })}
       </div>
     </div>
