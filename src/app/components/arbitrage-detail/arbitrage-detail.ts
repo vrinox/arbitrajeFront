@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { Arbitrage } from '../../entities/arbitrage.entity';
 import { ArbitrageStatusEnum } from '../../core/enum/arbitrage.enum';
 import { roundToPrecision } from '../../core/utils/math.util';
-import { PriceVariationItem } from '../../core/interfaces/arbitrage.interface';
+import { CalculatedOrderData, PriceVariationItem } from '../../core/interfaces/arbitrage.interface';
 import { ColorsEnum } from '../../core/enum/colors.enum';
 import { formatDate, msToTime } from '../../core/utils/time.util';
 
@@ -111,9 +111,18 @@ export class ArbitrageDetail extends LitElement {
           </mat-list>
         </div>
         <div>
-          <h3>Real Orders:</h3>
+          <h3>Orders:</h3>
           <mat-list>
-            ${this.arbitrage.realOrders.map(order => html`<real-order-display .order=${order}>`)}
+            ${this.arbitrage.calculatedOrders.map((calculatedOrder: CalculatedOrderData, i) => {
+              const {price, amount, type} = calculatedOrder
+              const order = this.arbitrage.realOrders[i];
+                return html`
+                  <h3>Order${i+1}</h3>
+                  
+                  [Simulated] ${type} ${amount} at price:${price} 
+                  ${order? html`<real-order-display .order=${order} ></real-order-display>`: nothing}
+                  `
+              })}
           </mat-list>
         </div>
         <div style="width: 100%">
