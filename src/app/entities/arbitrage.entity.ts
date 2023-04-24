@@ -1,5 +1,5 @@
 
-import { AccountBalance, ArbitrageLog, CalculatedOrderData, IArbitrage, Order } from '../core/interfaces/arbitrage.interface';
+import { ArbitrageLog, BalanceUpdates, CalculatedOrderData, IArbitrage, Order } from '../core/interfaces/arbitrage.interface';
 import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
 import { roundToPrecision } from '../core/utils/math.util';
 
@@ -8,7 +8,7 @@ export class Arbitrage implements IArbitrage {
   realOrders: Order[] = [];
   calculatedOrders: CalculatedOrderData[] = [];
   symbols: string[];
-  BalanceUpdates: { [order: string]: AccountBalance } = {};
+  BalanceUpdates: BalanceUpdates = {};
   feeCurrency: string = 'BNB';
   status: ArbitrageStatusEnum = ArbitrageStatusEnum.INIT;
   reverseOrder: Order = {} as Order;

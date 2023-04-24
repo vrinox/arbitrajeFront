@@ -54,7 +54,6 @@ export class SocketIOServiceService {
   dailyPerformance(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on(SocketNotificationTypeEnum.DAY_PERFORMANCE, (arbitrages) => {
-        this.activeArbitrage.next(this.arbitrageFactory.createArbitrage(arbitrages[0]));
         observer.next(arbitrages);
       });
 

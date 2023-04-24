@@ -113,14 +113,8 @@ export class ArbitrageDetail extends LitElement {
           <h3>Orders:</h3>
           <mat-list>
             ${this.arbitrage.calculatedOrders.map((calculatedOrder: CalculatedOrderData, i) => {
-              const {price, amount, type} = calculatedOrder
               const order = this.arbitrage.realOrders[i];
-                return html`
-                  <h3>Order${i+1}</h3>
-                  
-                  [Simulated] ${type} ${amount} at price:${price} 
-                  ${order? html`<real-order-display .order=${order} ></real-order-display>`: nothing}
-                  `
+                return html`<real-order-display .order=${order} .calculated=${calculatedOrder} .index=${i+1}></real-order-display>`;
               })}
           </mat-list>
         </div>
@@ -129,6 +123,10 @@ export class ArbitrageDetail extends LitElement {
           <ul>
             ${this.arbitrage.log.map(logData => html`<arbitrage-log-display .log=${logData} />`)}
           </ul>
+        </div>
+        <div style="width: 100%">
+          <h3>Balance updates:</h3>
+          <balance-update-display .balanceStatus=${this.arbitrage.BalanceUpdates}></balance-update-display>
         </div>
       </div>
     </div>`;

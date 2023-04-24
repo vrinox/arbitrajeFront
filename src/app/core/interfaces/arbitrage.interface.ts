@@ -106,3 +106,4 @@ export interface DailyPerformanceData {
 }
 
 export interface PriceVariationItem{ calculated: number, real: number, percentDiff: number }
+export interface BalanceUpdates{ [order: string]: AccountBalance }

@@ -31,6 +31,7 @@ import './components/monthly-resumen/monthly-resumen';
 import './components/active-arbitrage-bar';
 import './components/account-status';
 import './components/card-title';
+import './components/arbitrage-detail/balance-update-display';
 
 @NgModule({
   declarations: [
