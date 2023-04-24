@@ -84,11 +84,10 @@ export class ArbitrageDetail extends LitElement {
     const [intermediate, ticker] = this.arbitrage.symbols[1].split('/');
     const realProfit = this.arbitrage.calculateRealProfit();
     const feeCurrency = this.arbitrage.feeCurrency;
-    const avgTime = this.arbitrage.finishAt - this.arbitrage.createdAt;
     return html`
     <div class="detail">
       <h2>Arbitrage [${intermediate}/${ticker}]</h2>
-      <div class="grid-container">
+      <div>
         <div>
           <h3>Data:</h3>
           <i>Status:</i> ${this.arbitrage.status}<br>

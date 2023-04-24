@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IArbitrage } from './core/interfaces/arbitrage.interface';
+import { AccountBalance, IArbitrage, Order } from './core/interfaces/arbitrage.interface';
 import { Arbitrage } from './entities/arbitrage.entity';
 import { BehaviorSubject } from 'rxjs';
 import { ArbitrageFactory } from './factories/arbitrage.factory';
@@ -7,7 +7,10 @@ import {io} from 'socket.io-client';
 import { environment } from './core/environments/enviroment';
 import { Observable } from 'rxjs';
 import { SocketNotificationTypeEnum } from './core/enum/arbitrage.enum';
-
+export interface AccountSnapshot{
+  orders: Order[];
+  balances: AccountBalance;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -15,11 +18,21 @@ export class SocketIOServiceService {
   private socket;
   private arbitrages: BehaviorSubject<Arbitrage[]> = new BehaviorSubject([] as Arbitrage[]);
   activeArbitrage: BehaviorSubject<Arbitrage> = new BehaviorSubject({} as Arbitrage);
+  account: BehaviorSubject<AccountSnapshot> = new BehaviorSubject({} as AccountSnapshot);
+  isAccountConnected: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private arbitrageFactory: ArbitrageFactory) {
     this.socket = io(environment.socketUrl);
     this.listenForArbitrageUpdates();
     this.listenForActiveArbitrage();
+    this.listenForAccountUpdates();  
+  }
+
+  private listenForAccountUpdates(){
+    this.socket.on(SocketNotificationTypeEnum.ACCOUNT_UPDATE, (data: AccountSnapshot) => {
+      this.isAccountConnected.next(true);
+      this.account.next(data);
+    });
   }
 
   private listenForActiveArbitrage(){
@@ -41,6 +54,7 @@ export class SocketIOServiceService {
   dailyPerformance(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on(SocketNotificationTypeEnum.DAY_PERFORMANCE, (arbitrages) => {
+        this.activeArbitrage.next(this.arbitrageFactory.createArbitrage(arbitrages[0]));
         observer.next(arbitrages);
       });
 

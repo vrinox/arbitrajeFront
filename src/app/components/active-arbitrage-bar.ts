@@ -2,8 +2,7 @@ import { LitElement, html, css, nothing, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Arbitrage } from '../entities/arbitrage.entity';
 import { CalculatedOrderData, PriceVariationItem } from '../core/interfaces/arbitrage.interface';
-import { formatDate, msToTime } from '../core/utils/time.util';
-import { ArbitrageStatusEnum } from '../core/enum/arbitrage.enum';
+import { formatDate } from '../core/utils/time.util';
 import { ColorsEnum } from '../core/enum/colors.enum';
 
 @customElement('active-arbitrage-bar')
@@ -16,25 +15,24 @@ export class ActiveArbitrageBar extends LitElement {
       font-family: 'Roboto', sans-serif;
     }
     .detail {
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 16px;
-        margin:10px;
-        width: calc(100% - 20px - 32px);
-        overflow: hidden;
-      }
-      .container{        
-        padding: 16px;
-        display:flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-      }
-      .title{
-        color: white;
-        padding: 5px;
-        background-color: ${unsafeCSS(ColorsEnum.blue)}
-      }
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 16px;
+      margin:10px;
+      width: calc(50% - 20px - 32px);
+      overflow: hidden;
+    }
+    .container{        
+      padding: 16px;
+      display:flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+    
+    .log{
+      margin-left:16px
+    }
   `;
   getPriceVariations(arbitrage: Arbitrage): PriceVariationItem[] {
     const priceVariations: { calculated: number, real: number, percentDiff: number }[] = [];
@@ -55,7 +53,7 @@ export class ActiveArbitrageBar extends LitElement {
     const feeCurrency = this.arbitrage.feeCurrency;
     return html`
      <div class="detail">
-      <div class="title">Active [${intermediate}/${ticker}]</div>
+      <card-title>Active [${intermediate}/${ticker}]</card-title>
       <div class="container">
         <div class="element">
           <strong>Data:</strong><br>
@@ -75,24 +73,18 @@ export class ActiveArbitrageBar extends LitElement {
           <strong>Orders:</strong><br>
           <mat-list>
             ${this.arbitrage.calculatedOrders.map((calculatedOrder: CalculatedOrderData, i) => {
-              const {price, amount, type} = calculatedOrder
-              const order = this.arbitrage.realOrders[i];
-                return html`
-                  <strong>Order${i+1}</strong><br>
-                  
-                  [Simulated] ${type} ${amount} at price:${price} 
-                  ${order? html`<real-order-display .order=${order} ></real-order-display>`: nothing}
-                  `
+              const order = this.arbitrage.realOrders[i] || {};
+                return html`<real-order-display .order=${order} .calculated=${calculatedOrder} .index=${i+1}></real-order-display>`
               })}
           </mat-list>
         </div>
-        <div  class="element">
+      </div>
+      <div class="log" style="width: 100%">
           <strong>Log:</strong><br>
           <ul>
             ${this.arbitrage.log.map(logData => html`<arbitrage-log-display .log=${logData} />`)}
           </ul>
         </div>
-      </div>
     </div>`;
   }
 }

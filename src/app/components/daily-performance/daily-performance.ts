@@ -35,12 +35,6 @@ export class DailyPerformance extends LitElement {
       max-width: calc(50vw - 62px);
       overflow:hidden;
     }
-    .title-bar{
-      background-color: ${unsafeCSS(ColorsEnum.blue)};
-      padding:10px;
-      color:white;
-      font-size: 2em;
-    }
     .content{
       padding:16px;
     }
@@ -84,7 +78,7 @@ export class DailyPerformance extends LitElement {
     }
     return html`
    <div class="daily">
-    <div class="title-bar"> ${date}</div>
+    <card-title style="font-size:2em"> ${date}</card-title>
     <div class="content">
       <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
         <mat-card>

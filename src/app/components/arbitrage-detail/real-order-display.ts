@@ -1,10 +1,12 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Order } from '../../core/interfaces/arbitrage.interface';
+import { CalculatedOrderData, Order } from '../../core/interfaces/arbitrage.interface';
 
 @customElement('real-order-display')
 export class RealOrderDisplay extends LitElement {
   @property({ type: Object }) order: Order = {} as Order;
+  @property({ type: Object }) calculated: CalculatedOrderData = {} as CalculatedOrderData;
+  @property({ type: Number}) index: number = 0;
 
   static override styles = css`
     :host {
@@ -15,11 +17,14 @@ export class RealOrderDisplay extends LitElement {
   `;
 
   override render() {
-    const { symbol,side, origQty, price } = this.order;
+    const {price, amount, type, symbol} = this.calculated
     return html`
-    <mat-list-item>
-      <b>[${symbol}]</b> ${side} ${Number(origQty)} at ${Number(price)}
-    </mat-list-item>
+    <div>
+      <strong>Order${this.index} [${symbol}]</strong><br>
+                  
+      [Simulated] ${type} ${amount} at price:${price}<br>
+      ${this.order? html`[Real] ${this.order.side} ${this.order.origQty} at ${this.order.price} <br>`: nothing }
+    </div>
   `;
   }
 }

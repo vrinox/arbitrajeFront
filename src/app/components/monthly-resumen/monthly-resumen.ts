@@ -33,12 +33,6 @@ export class MonthlyResumen extends LitElement {
       overflow:hidden;
     }
 
-    .title-bar{
-      background-color: ${unsafeCSS(ColorsEnum.blue)};
-      padding:10px;
-      color:white;
-      font-size: 2em;
-    }
     .content{
       padding:16px;
     }
@@ -80,7 +74,7 @@ export class MonthlyResumen extends LitElement {
     }
     return html`
    <div class="monthly">
-    <div class="title-bar"> Resumen</div>
+   <card-title style="font-size:2em"> Resumen</card-title>
     <div class="content">
       <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
         <mat-card>
