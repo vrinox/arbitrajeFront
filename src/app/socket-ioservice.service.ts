@@ -14,14 +14,23 @@ import { SocketNotificationTypeEnum } from './core/enum/arbitrage.enum';
 export class SocketIOServiceService {
   private socket;
   private arbitrages: BehaviorSubject<Arbitrage[]> = new BehaviorSubject([] as Arbitrage[]);
+  activeArbitrage: BehaviorSubject<Arbitrage> = new BehaviorSubject({} as Arbitrage);
 
   constructor(private arbitrageFactory: ArbitrageFactory) {
     this.socket = io(environment.socketUrl);
     this.listenForArbitrageUpdates();
+    this.listenForActiveArbitrage();
+  }
+
+  private listenForActiveArbitrage(){
+    this.socket.on(SocketNotificationTypeEnum.ACTIVE_ARBITRAGE, (data: IArbitrage) => {
+      const arbitrage = this.arbitrageFactory.createArbitrage(data);
+      this.activeArbitrage.next(arbitrage);
+    });
   }
 
   private listenForArbitrageUpdates() {
-    this.socket.on('arbitrageUpdate', (data: IArbitrage) => {
+    this.socket.on(SocketNotificationTypeEnum.ACTIVE_ARBITRAGE, (data: IArbitrage) => {
       const arbitrage = this.arbitrageFactory.createArbitrage(data);
       const currentArbitrages = this.arbitrages.getValue();
       currentArbitrages.push(arbitrage);

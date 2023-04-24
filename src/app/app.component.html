@@ -1,2 +1,6 @@
 <app-header (click)="goToCompare()"/>
+<div *ngIf="activeArbitrage.arbitrageId">
+  <active-arbitrage-bar  [arbitrage]="activeArbitrage"></active-arbitrage-bar>
+</div>
+
 <router-outlet></router-outlet>

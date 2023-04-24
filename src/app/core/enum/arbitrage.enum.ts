@@ -8,5 +8,6 @@ export enum ArbitrageStatusEnum {
 }
 export enum SocketNotificationTypeEnum {
   SUCCESSFUL_ARBITRAGE = 'arbitrage',
-  DAY_PERFORMANCE= 'arbitragesByDate'
+  DAY_PERFORMANCE= 'arbitragesByDate',
+  ACTIVE_ARBITRAGE= 'activeArbitrage'
 }

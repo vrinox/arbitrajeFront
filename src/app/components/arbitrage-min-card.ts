@@ -56,7 +56,7 @@ export class ArbitrageMinCard extends LitElement {
     return html`
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <div class='card' style="background-color:${profitLoss >= 0? ColorsEnum.green: ColorsEnum.red}" @click=${this.handleClick}>
-      <div class='title'>[${intermediate}/${ticker}] ${minProfit}
+      <div class='title'>[${intermediate}/${ticker}]
         <div class='icon-cont'>
           ${this.printStatusIcon()}
         </div>
