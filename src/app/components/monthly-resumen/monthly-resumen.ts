@@ -86,7 +86,7 @@ export class MonthlyResumen extends LitElement {
       </div>
       <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
         <mat-card>
-          <b>Fees</b> ${totalFees.toFixed(6)}BNB
+          <b>Fees</b> ${totalFees.toFixed(6)}$
         </mat-card>
       </div>
       ${isNaN(averageTime)? "": html`<div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100" >

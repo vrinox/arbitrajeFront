@@ -38,6 +38,9 @@ export class DailyPerformance extends LitElement {
     .content{
       padding:16px;
     }
+    .container-list{
+        width: 456px;
+      }
   `;
 
   handleArbitrageSelected(event: CustomEvent){
@@ -90,7 +93,7 @@ export class DailyPerformance extends LitElement {
       </div>
       <div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100">
         <mat-card>
-          <b>Fees</b> ${totalFees.toFixed(6)}BNB
+          <b>Fees</b> ${totalFees.toFixed(6)}$
         </mat-card>
       </div>
       ${isNaN(averageTime)? "": html`<div fxFlex.gt-sm="33" fxFlex.md="50" fxFlex.sm="100" >
@@ -111,7 +114,7 @@ export class DailyPerformance extends LitElement {
         </div>
       </div>
       <h2>Arbitrages</h2>
-        <arbitrage-min-list .arbitrages=${arbitrages} @arbitrageSelected=${this.handleArbitrageSelected} ></arbitrage-min-list> 
+        <arbitrage-min-list class="container-list" .arbitrages=${arbitrages} @arbitrageSelected=${this.handleArbitrageSelected} ></arbitrage-min-list> 
     </div>
     <br>
   </div>`;

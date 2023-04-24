@@ -17,7 +17,6 @@ export class ArbitrageMinList extends LitElement {
       width: calc(100vw -20px);
       overflow: hidden;
       flex-wrap: wrap;
-      width: 456px;
     }
   `;
   handleArbitrageSelected(event: CustomEvent) {

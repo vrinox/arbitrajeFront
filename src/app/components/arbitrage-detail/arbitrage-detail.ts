@@ -23,8 +23,12 @@ export class ArbitrageDetail extends LitElement {
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         margin-bottom: 16px;
-        padding: 16px;
+        overflow: hidden;
         margin:10px;
+      }
+      .container{
+        
+        padding: 16px;
       }
 
       h3 {
@@ -51,6 +55,7 @@ export class ArbitrageDetail extends LitElement {
         justify-content: space-between;
         align-items: center;
       }
+      
   `;
 
   getPriceVariations(arbitrage: Arbitrage): PriceVariationItem[] {
@@ -86,8 +91,8 @@ export class ArbitrageDetail extends LitElement {
     const feeCurrency = this.arbitrage.feeCurrency;
     return html`
     <div class="detail">
-      <h2>Arbitrage [${intermediate}/${ticker}]</h2>
-      <div>
+      <card-title style="font-size: 1.5em"> Arbitrage [${intermediate}/${ticker}]</card-title>
+      <div class="container">
         <div>
           <h3>Data:</h3>
           <i>Status:</i> ${this.arbitrage.status}<br>

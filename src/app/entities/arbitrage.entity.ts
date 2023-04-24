@@ -60,6 +60,7 @@ export class Arbitrage implements IArbitrage {
   calculateRealFees(): number {
     if (this.status === ArbitrageStatusEnum.END || this.status === ArbitrageStatusEnum.REVERSED) {
       return roundToPrecision(this.BalanceUpdates[ArbitrageStatusEnum.INIT][this.feeCurrency] - this.BalanceUpdates[this.status][this.feeCurrency],8);
+      
     }
     return 0
   }

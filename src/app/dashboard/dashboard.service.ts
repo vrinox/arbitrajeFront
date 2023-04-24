@@ -34,7 +34,7 @@ export class DashboardService {
       dailyPerformance.arbitragesWithLoss += arbitrage.calculateRealProfit() < 0 ? 1 : 0;
       dailyPerformance.arbitragesFailed += arbitrage.status === ArbitrageStatusEnum.REVERSED? 1 : 0;
       dailyPerformance.profitLoss += roundToPrecision(arbitrage.calculateRealProfit(), 2);
-      dailyPerformance.totalFees += arbitrage.calculateRealFees();
+      if(arbitrage.calculateRealFees() > 0) dailyPerformance.totalFees += arbitrage.calculateRealFees() * arbitrage.feesCoinPrice;
       
       if(arbitrage.finishAt){
         contValidExecution++;
