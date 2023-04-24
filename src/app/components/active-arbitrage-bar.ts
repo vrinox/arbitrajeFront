@@ -20,7 +20,6 @@ export class ActiveArbitrageBar extends LitElement {
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       margin-bottom: 16px;
       margin:10px;
-      width: calc(50% - 20px - 32px);
       overflow: hidden;
     }
     .container{        
