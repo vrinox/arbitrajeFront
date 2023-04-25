@@ -13,7 +13,7 @@ export class AppComponent {
   activeArbitrage: Arbitrage = {} as Arbitrage;
   accountSnapshot: AccountSnapshot = {} as AccountSnapshot;
   accountConnected: boolean = false;
-  prices: exchangePricesCache = {} as exchangePricesCache;
+  prices: exchangePricesCache | null = null ;
   constructor(
     private router: Router,
     private socket: SocketIOServiceService
@@ -24,7 +24,7 @@ export class AppComponent {
     });
     this.socket.account.subscribe((snapshot:AccountSnapshot)=>{
       snapshot.orders = snapshot.orders?.map((order:Order)=>{
-        order.updatedPrice = Number(this.prices[order.symbol]);
+        if(this.prices) order.updatedPrice = Number(this.prices[order.symbol]);
         return order;
       })
       this.accountSnapshot = snapshot;

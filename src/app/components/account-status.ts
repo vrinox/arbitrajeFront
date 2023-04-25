@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Order } from '../core/interfaces/arbitrage.interface';
-import { AccountSnapshot } from '../socket-ioservice.service';
+import { Order, exchangePricesCache } from '../core/interfaces/arbitrage.interface';
+import { AccountSnapshot, SocketIOServiceService } from '../socket-ioservice.service';
 import { formatDate, msToTime } from '../core/utils/time.util';
 
 @customElement('account-status-card')
@@ -10,6 +10,7 @@ export class AccountStatusCard extends LitElement {
     orders: [] as Order[],
     balances: {}
   } as AccountSnapshot;
+  @property({type: Object}) prices: exchangePricesCache | null = null;
   @property({ type: Array }) elapsedTimes: number[] = [];
 
   private intervalId?: any;
@@ -43,11 +44,12 @@ export class AccountStatusCard extends LitElement {
     }, 1000);
   }
   private updateElapsedTimes() {
-    if(!this.accountSnapshot.orders) return ;
+    if(!this.accountSnapshot.orders || this.accountSnapshot.orders.length === 0) return ;
     this.elapsedTimes = this.accountSnapshot.orders.map(
       (order) => Date.now() - order.updateTime
     );
   }
+  
   override disconnectedCallback() {
     super.disconnectedCallback();
     if (this.intervalId) {
@@ -56,6 +58,7 @@ export class AccountStatusCard extends LitElement {
   }
   override render() {
     if(!this.accountSnapshot.balances) return nothing;
+    let total = 0;
     return html`
     <card-title>Account status</card-title>
     <div class="container">
@@ -64,8 +67,13 @@ export class AccountStatusCard extends LitElement {
         ${Object.entries(this.accountSnapshot.balances)
         .filter(([key,value])=> value !== 0)
         .map(([key, value])=>{
-          return html`[${key}]: ${value.toFixed(8)}<br>`;
+          const prices = this.prices![`${key}USDT`];
+          let available = prices?.BUY ? prices.BUY * Number(value): 0;
+          if(key === 'USDT') available = value;
+          total += available;
+          return html`[${key}]: ${value.toFixed(8)} / ${available.toFixed(2)}$ <br>`;
         })}
+        <b>Available</b>${total.toFixed(2)}$
       </div>
       <div class="orders">
         <strong>Orders:</strong><br>
