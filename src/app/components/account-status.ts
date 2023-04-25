@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { Order, exchangePricesCache } from '../core/interfaces/arbitrage.interface';
 import { AccountSnapshot, SocketIOServiceService } from '../socket-ioservice.service';
 import { formatDate, msToTime } from '../core/utils/time.util';
+import { ColorsEnum } from '../core/enum/colors.enum';
 
 @customElement('account-status-card')
 export class AccountStatusCard extends LitElement {
@@ -57,6 +58,7 @@ export class AccountStatusCard extends LitElement {
     }
   }
   override render() {
+    
     if(!this.accountSnapshot.balances) return nothing;
     let total = 0;
     return html`
@@ -78,8 +80,15 @@ export class AccountStatusCard extends LitElement {
       <div class="orders">
         <strong>Orders:</strong><br>
         ${this.accountSnapshot.orders.map((order:Order, index: number)=>{
-          const {side, origQty, price, updatedPrice} = order;
-          return html`<div>[${side}] ${Number(origQty)} at ${Number(price)} took:${msToTime(this.elapsedTimes[index])} updatedPrice:${updatedPrice}</div><br>`
+          const {side, origQty, price, symbol} = order;
+          const updatedPrice = this.prices![symbol][side];
+          const percentDiff = ((updatedPrice - Number(price)) / Number(price)) * 100;
+          return html`
+            <div>
+              [${symbol}][${side}] ${Number(origQty)} at ${Number(price)} actualPrice:${updatedPrice}<br>
+              <span style="color:${percentDiff > 0? ColorsEnum.green: ColorsEnum.red}">diff:${percentDiff.toFixed(2)}%</span> 
+              took:${msToTime(this.elapsedTimes[index])}
+            </div><br>`
         })}
       </div>
     </div>    

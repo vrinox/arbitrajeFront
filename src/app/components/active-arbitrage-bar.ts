@@ -59,6 +59,7 @@ export class ActiveArbitrageBar extends LitElement {
           <i>Status:</i> ${this.arbitrage.status}<br>
           <i>Arbitrage Id:</i> ${this.arbitrage.arbitrageId}<br>
           <i>Fees:</i> ${this.arbitrage.calculateRealFees()} ${feeCurrency}<br>  
+          <i>Simulated Profit:</i>${this.arbitrage.getSimulateProfit()}$<br>        
           <i>Created At:</i>${formatDate(new Date(this.arbitrage.createdAt))}<br>        
         </div>
         <div class="element">

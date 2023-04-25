@@ -23,10 +23,6 @@ export class AppComponent {
       this.activeArbitrage = (arbitrage.arbitrageId) ? arbitrage: {} as Arbitrage;
     });
     this.socket.account.subscribe((snapshot:AccountSnapshot)=>{
-      snapshot.orders = snapshot.orders?.map((order:Order)=>{
-        if(this.prices) order.updatedPrice = Number(this.prices[order.symbol]);
-        return order;
-      })
       this.accountSnapshot = snapshot;
     });
     this.socket.prices.subscribe((data:exchangePricesCache)=>{

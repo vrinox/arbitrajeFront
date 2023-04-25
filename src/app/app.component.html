@@ -1,6 +1,6 @@
 <app-header (click)="goToCompare()"/>
 <div class="status"*ngIf="prices !== null">
-  <active-arbitrage-bar  [arbitrage]="activeArbitrage" ></active-arbitrage-bar>
   <account-status-card [accountSnapshot]="accountSnapshot" [prices]="prices"></account-status-card>
+  <active-arbitrage-bar  [arbitrage]="activeArbitrage" ></active-arbitrage-bar>
 </div>
 <router-outlet></router-outlet>

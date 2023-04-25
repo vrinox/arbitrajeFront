@@ -25,7 +25,7 @@ export class DailyPerformance extends LitElement {
       font-family: 'Roboto', sans-serif;
       margin:10px;
       width: calc(50vw - 30px);
-      max-width:500px;
+      max-width:calc(33% - 15px);
     }
     
     .daily{

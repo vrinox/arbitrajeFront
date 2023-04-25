@@ -23,7 +23,7 @@ export class RealOrderDisplay extends LitElement {
       <strong>Order${this.index} [${symbol}]</strong><br>
                   
       [Simulated] ${type} ${amount} at price:${price}<br>
-      ${this.order.orderId? html`[Real] ${this.order.side} ${this.order.origQty} at ${this.order.price} <br>`: nothing }
+      ${this.order.orderId? html`[Real] ${this.order.side} ${Number(this.order.origQty)} at ${Number(this.order.price)} <br>`: nothing }
     </div>
   `;
   }
